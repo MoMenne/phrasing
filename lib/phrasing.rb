@@ -60,6 +60,18 @@ module Phrasing
     allow_update_on_all_models_and_attributes == true or whitelist.include? "#{klass}.#{attribute}"
   end
 
+  def self.allow_markdown
+    if defined? @@allow_markdown
+      @@allow_markdown
+    else
+      false
+    end
+  end
+
+  def self.allow_markdown=(allow_markdown)
+    @@allow_markdown = allow_markdown
+  end
+
   private
 
     def self.suppress_log

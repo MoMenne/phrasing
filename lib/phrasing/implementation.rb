@@ -1,3 +1,4 @@
+require 'html/pipeline'
 module Phrasing
   module Implementation
     # this method overrides part of the i18n gem, lib/i18n/backend/simple.rb
@@ -7,6 +8,7 @@ module Phrasing
       scoped_key = I18n.normalize_keys(nil, key, scope, options[:separator]).join(".")
 
       phrase = PhrasingPhrase.where(locale: locale.to_s, key: scoped_key).first
+      return HTML::Pipeline::MarkdownFilter.new(phrase.value).call if phrase and Phrasing.allow_markdown
       return phrase.value if phrase
 
       value = super(locale, key, scope, options)

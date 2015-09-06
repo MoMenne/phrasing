@@ -46,5 +46,13 @@ describe Phrasing do
       base.lookup('en', 'foo', :"the_scope")
       PhrasingPhrase.where(locale: 'en', key: 'the_scope.foo').should_not be_empty
     end
+    describe 'with markdown' do
+      it "returns markdown for marked up content" do
+        Phrasing.allow_markdown = true
+        text = FactoryGirl.generate(:string)
+        cct = FactoryGirl.create(:phrasing_phrase, value: "*#{text}*")
+        base.lookup(cct.locale, cct.key).should eq "<p><em>#{text}</em></p>"
+      end
+    end
   end
 end
